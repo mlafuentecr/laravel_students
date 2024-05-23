@@ -5,20 +5,32 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 use App\Http\Resources\ClassesCollection;
+use App\Filters\ClassesFilter;
+use Illuminate\Http\Request;
 use App\Models\Classes;
+
 
 class ClassesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         // return response()->json(Classes::all());
-         $clases = Classes::all();
-        return new ClassesCollection($clases);
-    }
+        //  $clases = Classes::all();
+        // return new ClassesCollection($clases);
+        $filter = new ClassesFilter();
+        $queryfilters = $filter->transform($request);
+        if(count($queryfilters) == 0){
+            return new ClassesCollection(Classes::paginate());
+        }else{
+            $classes = Classes::where($queryfilters);
+            return new ClassesCollection($classes->paginate()->appends($request->query()));
+        }
+        //http://127.0.0.1:8000/api/v1/clases?class_name[eq]=Movimiento
+     }
 
     /**
      * Show the form for creating a new resource.

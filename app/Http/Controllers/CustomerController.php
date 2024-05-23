@@ -32,6 +32,7 @@ class CustomerController extends Controller
         return new CustomerCollection($paginatedCustomers);
         ///api/v1/estudiantes?payment_status[eq]=overdue //revisar customer filter para ver como se hace
         //http://127.0.0.1:8000/api/v1/estudiantes?include_classes=true
+        // api/v1/estudiantes?payment_status[eq]=overdue&include_classes=true
     }
 
     /**
