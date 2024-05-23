@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreClassesRequest;
-use App\Http\Requests\UpdateClassesRequest;
+use App\Http\Requests\StoreCustomerRequest;
+use App\Http\Requests\UpdateCustomerRequest;
+use App\Http\Resources\ClassesCollection;
 use App\Models\Classes;
 
 class ClassesController extends Controller
@@ -14,7 +15,9 @@ class ClassesController extends Controller
     public function index()
     {
         //
-        return response()->json(Classes::all());
+        // return response()->json(Classes::all());
+         $clases = Classes::all();
+        return new ClassesCollection($clases);
     }
 
     /**

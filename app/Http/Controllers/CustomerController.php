@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
+use App\Http\Resources\CustomerCollection;
+use App\Filters\CustomerFilter;
+use Illuminate\Http\Request;
 use App\Models\Customer;
 
 class CustomerController extends Controller
@@ -11,11 +14,20 @@ class CustomerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         // return json  return Customer::all();
-        return response()->json(Customer::all());
+        //en json
+        //return response()->json(Customer::all());
+        //json en data
+        //$customers = Customer::all();
+        $filter = new CustomerFilter();
+        $filters = $filter->transform($request);
         
+        $customers = Customer::where($filters);
+        $paginatedCustomers = $customers->paginate()->appends($request->query());
+        return new CustomerCollection($paginatedCustomers);
+        ///api/v1/estudiantes?payment_status[eq]=overdue //revisar customer filter para ver como se hace
     }
 
     /**

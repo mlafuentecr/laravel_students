@@ -14,5 +14,6 @@ Route::get('/user', function (Request $request) {
 
 Route::group(['prefix' => 'v1', 'namespace' => 'App\Http\Controllers'], function () {
     Route::apiResource('customers', 'CustomerController');
-    Route::apiResource('classes', 'ClassesController');
+    Route::apiResource('estudiantes', 'CustomerController');
+    Route::apiResource('clases', 'ClassesController');
 });
